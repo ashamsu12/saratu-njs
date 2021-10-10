@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "./components/_all.css";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap');
+html{
+    font-family: Poppins;
+}
+blockquote::before {
+    content: '\201C';
+}
+
+blockquote::after {
+    content: '\201D';
+}
