@@ -1,4 +1,9 @@
-import { AtSymbolIcon, GlobeAltIcon } from "@heroicons/react/outline";
+import { Disclosure } from "@headlessui/react";
+import {
+  AtSymbolIcon,
+  ChevronUpIcon,
+  GlobeAltIcon,
+} from "@heroicons/react/outline";
 import Head from "next/head";
 import Image from "next/image";
 
@@ -37,6 +42,25 @@ const articles = [
     image:
       "https://www.gulftoday.ae/-/media/test-pics/woman.ashx?h=450&la=en&w=700&hash=C807E508ABAC6E784263B7D4FCD3EB61",
     org: "Gulf today",
+  },
+];
+
+const research = [
+  {
+    name: "The Language of African Literature: An Analysis on the Use of English Language in Nigerian Literary Works",
+    link: "https://www.academia.edu/39628672/The_Language_of_African_Literature_An_Analysis_on_the_Use_of_English_Language_in_Nigerian_Literary_Works",
+    image:
+      "https://a.academia-assets.com/assets/academia-logo-redesign-2015-45ae31566d1421084023fae986d81b06469982455d4be698a5226a904e7836a9.svg",
+    org: "Academia.org",
+  },
+];
+
+const fiction = [
+  {
+    name: "Becoming",
+    link: "",
+    image: "/becoming.jpeg",
+    org: "Saratu Ummul-Iman Abubakar",
   },
 ];
 export default function Home() {
@@ -87,18 +111,14 @@ export default function Home() {
           <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div className="gap-8 md:grid-cols-6 flex justify-center items-center">
               <div className="flex justify-center">
-                <img
-                  className="h-12"
-                  src="/gulf_today.svg"
-                  alt="Tuple"
-                />
+                <img className="h-12" src="/gulf_today.svg" alt="Tuple" />
               </div>
             </div>
           </div>
         </div>
-        <div className="min-h-screen lg:relative bg-gray-50">
-          <div className="mx-auto max-w-7xl w-full pt-16 pb-20 text-center lg:pt-32 lg:text-left">
-            <div className="px-4 lg:w-1/2 sm:px-8 xl:pr-16">
+        <div className="min-h-screen lg:relative bg-gray-50 ">
+          <div className="mx-auto max-w-7xl w-full pt-16 pb-20 lg:grid lg:grid-cols-2 text-center lg:pt-32 lg:text-left">
+            <div className="px-4 sm:px-8 xl:pr-16">
               {/* <span className="text-xl font-light">Hello!</span> */}
               <div>
                 <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-xl md:text-3xl">
@@ -128,28 +148,149 @@ export default function Home() {
                 month. What the story brings determines the medium.
               </p>
             </div>
-            <div className="relative bg-gray-50 w-full h-64 sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 lg:h-full pt-16 lg:pt-32">
-              <div
-                role="list"
-                className="flex flex-col w-full"
-              >
-                {articles.map((article) => (
-                  <div
-                  key={article.name}
-                  className="relative odd:float-right m-1 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
-                >
-                  <div className="flex-shrink-0">
-                    <img className="h-10 w-10 rounded-full" src={article.image} alt="" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <a href={article.link} target={'_blank'} className="focus:outline-none">
-                      <span className="absolute inset-0" aria-hidden="true" />
-                      <p className="text-sm font-medium text-gray-900 truncate">{article.name}</p>
-                      <p className="text-sm text-gray-500 truncate">{article.org}</p>
-                    </a>
-                  </div>
+            <div className="relative bg-gray-50 w-full min-h-[16rem] sm:min-h-[18rem] md:min-h-[24rem] lg:right-0 lg:h-full">
+              <h2 className="text-2xl px-4 tracking-tight text-gray-300 mt-8 md:mt-0 sm:text-xl md:text-2xl">
+                <span className="font-semibold xl:inline whitespace-pre-wrap">
+                  Things I have done
+                </span>
+              </h2>
+              <div className="w-full px-4 pt-8">
+                <div className="w-full p-2 mx-auto rounded-2xl">
+                  {["feature", "fiction", "research", "podcast"].map((cat) => (
+                    <Disclosure as="div" className="mt-2 first:mt-0" key={cat}>
+                      {({ open }) => (
+                        <>
+                          <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                            <span className="capitalize">{cat}</span>
+                            <ChevronUpIcon
+                              className={`${
+                                open ? "transform rotate-180" : ""
+                              } w-5 h-5 text-purple-500`}
+                            />
+                          </Disclosure.Button>
+                          <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                            {cat === "feature" ? (
+                              <div role="list" className="flex flex-col w-full">
+                                {articles.map((article) => (
+                                  <div
+                                    key={article.name}
+                                    className="relative odd:float-right m-1 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                                  >
+                                    <div className="flex-shrink-0">
+                                      <img
+                                        className="h-10 w-10 rounded-full"
+                                        src={article.image}
+                                        alt=""
+                                      />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <a
+                                        href={article.link}
+                                        target={"_blank"}
+                                        className="focus:outline-none"
+                                      >
+                                        <span
+                                          className="absolute inset-0"
+                                          aria-hidden="true"
+                                        />
+                                        <p className="text-sm font-medium text-gray-900 truncate">
+                                          {article.name}
+                                        </p>
+                                        <p className="text-sm text-gray-500 truncate">
+                                          {article.org}
+                                        </p>
+                                      </a>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : null}
+                            {cat === "fiction" ? (
+                              <div className="flex flex-col w-full">
+                                {fiction.map((article) => (
+                                  <div
+                                    key={article.name}
+                                    className="relative odd:float-right m-1 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                                  >
+                                    <div className="flex-shrink-0">
+                                      <img
+                                        className="h-10 w-10 rounded-full"
+                                        src={article.image}
+                                        alt=""
+                                      />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <a
+                                        href={article.link}
+                                        target={"_blank"}
+                                        className="focus:outline-none"
+                                      >
+                                        <span
+                                          className="absolute inset-0"
+                                          aria-hidden="true"
+                                        />
+                                        <p className="text-sm font-medium text-gray-900 truncate">
+                                          {article.name}
+                                        </p>
+                                        <p className="text-sm text-gray-500 truncate">
+                                          {article.org}
+                                        </p>
+                                      </a>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : null}{" "}
+                            {cat === "research" ? (
+                              <div className="flex flex-col w-full">
+                                {research.map((article) => (
+                                  <div
+                                    key={article.name}
+                                    className="relative odd:float-right m-1 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                                  >
+                                    <div className="flex-shrink-0">
+                                      <img
+                                        className="h-10 w-10 rounded-full"
+                                        src={article.image}
+                                        alt=""
+                                      />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <a
+                                        href={article.link}
+                                        target={"_blank"}
+                                        className="focus:outline-none"
+                                      >
+                                        <span
+                                          className="absolute inset-0"
+                                          aria-hidden="true"
+                                        />
+                                        <p className="text-sm font-medium text-gray-900 truncate">
+                                          {article.name}
+                                        </p>
+                                        <p className="text-sm text-gray-500 truncate">
+                                          {article.org}
+                                        </p>
+                                      </a>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : null}
+                            {cat === "podcast" ? (
+                              <div className="py-10">
+                                <p className="text-center text-gray-400">
+                                  There's nothing here yet, check back in a few
+                                  weeks.
+                                </p>
+                              </div>
+                            ) : null}
+                          </Disclosure.Panel>
+                        </>
+                      )}
+                    </Disclosure>
+                  ))}
                 </div>
-                ))}
               </div>
             </div>
           </div>
@@ -157,35 +298,44 @@ export default function Home() {
       </main>
 
       <footer className="bg-white">
-      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
-        <div className="flex justify-center space-x-6 md:order-2">
-          {navigation.map((item) => (
-            <a key={item.name} href={item.href} target={'_blank'} className="text-gray-400 hover:text-gray-500">
-              <span className="sr-only">{item.name}</span>
-              <item.icon className="h-6 w-6" aria-hidden="true" />
-            </a>
-          ))}
+        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
+          <div className="flex justify-center space-x-6 md:order-2">
+            {navigation.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                target={"_blank"}
+                className="text-gray-400 hover:text-gray-500"
+              >
+                <span className="sr-only">{item.name}</span>
+                <item.icon className="h-6 w-6" aria-hidden="true" />
+              </a>
+            ))}
+          </div>
+          <div className="mt-8 md:mt-0 md:order-1">
+            <p className="text-center text-base text-gray-400">
+              &copy; 2020. All rights reserved.
+            </p>
+          </div>
         </div>
-        <div className="mt-8 md:mt-0 md:order-1">
-          <p className="text-center text-base text-gray-400">&copy; 2020. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
+      </footer>
     </div>
   );
 }
 
 const navigation = [
   {
-    name: 'LinkedIn',
-    href: 'https://www.linkedin.com/m/in/saratu-abubakar-ba9247117',
+    name: "LinkedIn",
+    href: "https://www.linkedin.com/m/in/saratu-abubakar-ba9247117",
     icon: (props) => (
-      <svg {...props} fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+      <svg {...props} fill="currentColor" viewBox="0 0 24 24">
+        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+      </svg>
     ),
   },
   {
-    name: 'Instagram',
-    href: '#',
+    name: "Instagram",
+    href: "#",
     icon: (props) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
@@ -197,8 +347,8 @@ const navigation = [
     ),
   },
   {
-    name: 'Twitter',
-    href: '#',
+    name: "Twitter",
+    href: "#",
     icon: (props) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
@@ -206,10 +356,8 @@ const navigation = [
     ),
   },
   {
-    name: 'Email',
-    href: 'mailto:sarauabu@gmail.com',
-    icon: (props) => (
-      <AtSymbolIcon {...props}/>
-    ),
+    name: "Email",
+    href: "mailto:sarauabu@gmail.com",
+    icon: (props) => <AtSymbolIcon {...props} />,
   },
-]
+];
