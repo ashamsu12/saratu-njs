@@ -6,6 +6,8 @@ import {
 } from "@heroicons/react/outline";
 import Head from "next/head";
 import Image from "next/image";
+import { IPortfolio } from "../lib/interfaces";
+import { getPortfolioContent } from "../lib/queries";
 
 const articles = [
   {
@@ -63,7 +65,7 @@ const fiction = [
     org: "Saratu Ummul-Iman Abubakar",
   },
 ];
-export default function Home() {
+export default function Home({items}:{items:IPortfolio[]}) {
   return (
     <div className="relative min-h-screen">
       <Head>
@@ -170,8 +172,9 @@ export default function Home() {
                           </Disclosure.Button>
                           <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
                             {cat === "feature" ? (
+                              <>
                               <div role="list" className="flex flex-col w-full">
-                                {articles.map((article) => (
+                                {items.filter(it=>it.type.toLowerCase()===cat).map((article) => (
                                   <div
                                     key={article.name}
                                     className="relative odd:float-right m-1 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
@@ -179,7 +182,7 @@ export default function Home() {
                                     <div className="flex-shrink-0">
                                       <img
                                         className="h-10 w-10 rounded-full"
-                                        src={article.image}
+                                        src={article.image_url}
                                         alt=""
                                       />
                                     </div>
@@ -197,93 +200,151 @@ export default function Home() {
                                           {article.name}
                                         </p>
                                         <p className="text-sm text-gray-500 truncate">
-                                          {article.org}
+                                          {article.description}
                                         </p>
                                       </a>
                                     </div>
                                   </div>
                                 ))}
-                              </div>
-                            ) : null}
-                            {cat === "fiction" ? (
-                              <div className="flex flex-col w-full">
-                                {fiction.map((article) => (
-                                  <div
-                                    key={article.name}
-                                    className="relative odd:float-right m-1 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
-                                  >
-                                    <div className="flex-shrink-0">
-                                      <img
-                                        className="h-10 w-10 rounded-full"
-                                        src={article.image}
-                                        alt=""
-                                      />
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                      <a
-                                        href={article.link}
-                                        target={"_blank"}
-                                        className="focus:outline-none"
-                                      >
-                                        <span
-                                          className="absolute inset-0"
-                                          aria-hidden="true"
-                                        />
-                                        <p className="text-sm font-medium text-gray-900 truncate">
-                                          {article.name}
-                                        </p>
-                                        <p className="text-sm text-gray-500 truncate">
-                                          {article.org}
-                                        </p>
-                                      </a>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            ) : null}{" "}
-                            {cat === "research" ? (
-                              <div className="flex flex-col w-full">
-                                {research.map((article) => (
-                                  <div
-                                    key={article.name}
-                                    className="relative odd:float-right m-1 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
-                                  >
-                                    <div className="flex-shrink-0">
-                                      <img
-                                        className="h-10 w-10 rounded-full"
-                                        src={article.image}
-                                        alt=""
-                                      />
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                      <a
-                                        href={article.link}
-                                        target={"_blank"}
-                                        className="focus:outline-none"
-                                      >
-                                        <span
-                                          className="absolute inset-0"
-                                          aria-hidden="true"
-                                        />
-                                        <p className="text-sm font-medium text-gray-900 truncate">
-                                          {article.name}
-                                        </p>
-                                        <p className="text-sm text-gray-500 truncate">
-                                          {article.org}
-                                        </p>
-                                      </a>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            ) : null}
-                            {cat === "podcast" ? (
-                              <div className="py-10">
+                                </div>
+                                {items.filter(it=>it.type.toLowerCase()===cat).length===0&&(<div className="py-10">
                                 <p className="text-center text-gray-400">
                                   There's nothing here yet, check back in a few
                                   weeks.
                                 </p>
+                              </div>)}
+                              </>
+                            ) : null}
+                            {cat === "fiction" ? (
+                              <>
+                              <div className="flex flex-col w-full">
+                                {items.filter(it=>it.type.toLowerCase()===cat).map((article) => (
+                                  <div
+                                    key={article.name}
+                                    className="relative odd:float-right m-1 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                                  >
+                                    <div className="flex-shrink-0">
+                                      <img
+                                        className="h-10 w-10 rounded-full"
+                                        src={article.image_url}
+                                        alt=""
+                                      />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <a
+                                        href={article.link}
+                                        target={"_blank"}
+                                        className="focus:outline-none"
+                                      >
+                                        <span
+                                          className="absolute inset-0"
+                                          aria-hidden="true"
+                                        />
+                                        <p className="text-sm font-medium text-gray-900 truncate">
+                                          {article.name}
+                                        </p>
+                                        <p className="text-sm text-gray-500 truncate">
+                                          {article.description}
+                                        </p>
+                                      </a>
+                                    </div>
+                                  </div>
+                                ))}
+                                </div>
+                                {items.filter(it=>it.type.toLowerCase()===cat).length===0&&(<div className="py-10">
+                                <p className="text-center text-gray-400">
+                                  There's nothing here yet, check back in a few
+                                  weeks.
+                                </p>
+                              </div>)}
+                              </>
+                            ) : null}
+                            {cat === "research" ? (
+                              <>
+                              <div className="flex flex-col w-full">
+                                {items.filter(it=>it.type.toLowerCase()===cat).map((article) => (
+                                  <div
+                                    key={article.name}
+                                    className="relative odd:float-right m-1 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                                  >
+                                    <div className="flex-shrink-0">
+                                      <img
+                                        className="h-10 w-10 rounded-full"
+                                        src={article.image_url}
+                                        alt=""
+                                      />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <a
+                                        href={article.link}
+                                        target={"_blank"}
+                                        className="focus:outline-none"
+                                      >
+                                        <span
+                                          className="absolute inset-0"
+                                          aria-hidden="true"
+                                        />
+                                        <p className="text-sm font-medium text-gray-900 truncate">
+                                          {article.name}
+                                        </p>
+                                        <p className="text-sm text-gray-500 truncate">
+                                          {article.description}
+                                        </p>
+                                      </a>
+                                    </div>
+                                  </div>
+                                ))}
                               </div>
+                              {items.filter(it=>it.type.toLowerCase()===cat).length===0&&(<div className="py-10">
+                              <p className="text-center text-gray-400">
+                                There's nothing here yet, check back in a few
+                                weeks.
+                              </p>
+                            </div>)}</>
+                            ) : null}
+                            {cat === "podcast" ? (
+                              <>
+                                <div className="flex flex-col w-full">
+                                {items.filter(it=>it.type.toLowerCase()===cat).map((article) => (
+                                  <div
+                                    key={article.name}
+                                    className="relative odd:float-right m-1 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                                  >
+                                    <div className="flex-shrink-0">
+                                      <img
+                                        className="h-10 w-10 rounded-full"
+                                        src={article.image_url}
+                                        alt=""
+                                      />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <a
+                                        href={article.link}
+                                        target={"_blank"}
+                                        className="focus:outline-none"
+                                      >
+                                        <span
+                                          className="absolute inset-0"
+                                          aria-hidden="true"
+                                        />
+                                        <p className="text-sm font-medium text-gray-900 truncate">
+                                          {article.name}
+                                        </p>
+                                        <p className="text-sm text-gray-500 truncate">
+                                          {article.description}
+                                        </p>
+                                      </a>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                              {items.filter(it=>it.type.toLowerCase()===cat).length===0&&(<div className="py-10">
+                                <p className="text-center text-gray-400">
+                                  There's nothing here yet, check back in a few
+                                  weeks.
+                                </p>
+                              </div>)}
+                              </>
                             ) : null}
                           </Disclosure.Panel>
                         </>
@@ -361,3 +422,14 @@ const navigation = [
     icon: (props) => <AtSymbolIcon {...props} />,
   },
 ];
+
+export async function getStaticProps() {
+  const _items = await getPortfolioContent()
+  const items = _items.map(item => ({ id: item.id,type:item.type, name: item.name, description: item.description,link:item.link,image_url:item.image_url}))
+  console.log(items)
+  return {
+    props: {
+      items,
+    },
+  }
+}
